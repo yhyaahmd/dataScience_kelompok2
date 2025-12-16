@@ -37,8 +37,8 @@ from sklearn.metrics import mean_absolute_error
 from streamlit_image_carousel import image_carousel
 
 image_carousel([
-    {"img": "assets/banner1.jpg"},
-    {"img": "assets/banner2.jpg"}
+    {"img": "assets/banner1.png"},
+    {"img": "assets/banner2.png"}
 ])
 
 # ================= TITLE =================

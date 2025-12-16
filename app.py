@@ -73,13 +73,13 @@ if uploaded_file:
     st.markdown("🔹 Jumlah Missing Value Sebelum")
     st.dataframe(info_missing["missing_before"])
 
-    st.markdown("#### 🔹 Detail Penanganan Missing Value")
+    st.markdown("🔹 Detail Penanganan Missing Value")
     if not info_missing["handled_columns"].empty:
         st.dataframe(info_missing["handled_columns"])
     else:
         st.info("Tidak ditemukan missing value pada seluruh kolom data.")
 
-    st.markdown("#### 🔹 Jumlah Missing Value Sesudah")
+    st.markdown("🔹 Jumlah Missing Value Sesudah")
     st.dataframe(info_missing["missing_after"])
 
     # Outlier

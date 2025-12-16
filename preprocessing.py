@@ -34,7 +34,7 @@ def handle_missing_value(df):
                     "Tipe Data": str(df[col].dtype),
                     "Metode": "Modus",
                     "Nilai Pengganti": modus,
-                    "Jumlah Missing": jumlah_missing
+                    "Jumlah Missing Value": jumlah_missing
                 })
 
     # Missing value sesudah

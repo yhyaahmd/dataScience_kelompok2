@@ -35,7 +35,7 @@ from sklearn.metrics import mean_absolute_error
 
 # ============== Buat Banner ==============
 # url_banner1 = "https://github.com/yhyaahmd/dataScience_kelompok2/blob/main/assets/banner1.png"
-url_banner2 = "https://raw.githubusercontent.com/yhyaahmd/dataScience_kelompok2/main/assets/banner1.png"
+url_banner1 = "https://raw.githubusercontent.com/yhyaahmd/dataScience_kelompok2/main/assets/banner1.png"
 # url_banner2 = "https://raw.githubusercontent.com/USERNAME_ANDA/NAMA_REPO_ANDA/main/assets/banner2.png"
 carousel_items = [
     {

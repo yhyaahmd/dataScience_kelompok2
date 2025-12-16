@@ -68,9 +68,9 @@ if uploaded_file:
     # Missing Value
     df_clean, info_missing = handle_missing_value(df)
 
-    st.markdown("### 📌 Penanganan Missing Value")
+    st.markdown("📌 Penanganan Missing Value")
 
-    st.markdown("#### 🔹 Jumlah Missing Value Sebelum")
+    st.markdown("🔹 Jumlah Missing Value Sebelum")
     st.dataframe(info_missing["missing_before"])
 
     st.markdown("#### 🔹 Detail Penanganan Missing Value")

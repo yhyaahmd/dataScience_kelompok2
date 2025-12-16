@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import io
 import time
+from streamlit_carousel import carousel
 
 # ================= PAGE CONFIG (WAJIB PALING ATAS) =================
 st.set_page_config(

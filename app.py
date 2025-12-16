@@ -32,14 +32,17 @@ from preprocessing import (
 from modeling import run_regression
 from sklearn.metrics import mean_absolute_error
 
-# ================= BANNER SLIDER =================
-col1, col2 = st.columns(2)
+# =============== Buat Banner =====================
+banner = st.empty()
 
-with col1:
-    st.image("assets/banner1.png", use_container_width=True)
+images = [
+    "assets/banner1.png",
+    "assets/banner2.png"
+]
 
-with col2:
-    st.image("assets/banner2.png", use_container_width=True)
+for img in images:
+    banner.image(img, use_container_width=True)
+    time.sleep(2)
 
 # ================= TITLE =================
 st.title("📈 Prediksi Data Menggunakan Regresi Linear")

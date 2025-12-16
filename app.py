@@ -88,7 +88,7 @@ if uploaded_file:
         df_clean, show_plot=show_plot
     )
 
-    st.markdown("### 📌 Penanganan Outlier")
+    st.markdown("📌 Penanganan Outlier")
     st.dataframe(laporan_outlier)
 
     if fig:
@@ -105,7 +105,7 @@ if uploaded_file:
     else:
         df_ready = standardize_data(df_no_outlier)
 
-    st.markdown("### 📊 Data Setelah Preprocessing")
+    st.markdown("📊 Data Setelah Preprocessing")
     st.dataframe(df_ready.head())
 
     # ================= TARGET =================

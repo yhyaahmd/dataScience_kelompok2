@@ -5,16 +5,24 @@ import seaborn as sns
 import io
 import time
 
+# ================= PAGE CONFIG (WAJIB PALING ATAS) =================
+st.set_page_config(
+    page_title="Prediksi Pertanian",
+    layout="wide"
+)
+
+# ================= GLOBAL FONT (POPPINS) =================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-html, body, [class*="css"]  {
+html, body, [class*="css"] {
     font-family: 'Poppins', sans-serif;
 }
 </style>
 """, unsafe_allow_html=True)
 
+# ================= IMPORT MODULE =================
 from preprocessing import (
     handle_missing_value,
     replace_outlier_with_median,
@@ -24,8 +32,7 @@ from preprocessing import (
 from modeling import run_regression
 from sklearn.metrics import mean_absolute_error
 
-
-st.set_page_config(page_title="Prediksi Pertanian", layout="wide")
+# ================= TITLE =================
 st.title("📈 Prediksi Data Menggunakan Regresi Linear")
 
 # ================= UPLOAD FILE =================
@@ -34,7 +41,9 @@ uploaded_file = st.file_uploader(
     type=["csv", "xlsx"]
 )
 
+# ================= MAIN FLOW =================
 if uploaded_file:
+
     # ================= LOAD DATA =================
     if uploaded_file.name.endswith(".csv"):
         df = pd.read_csv(uploaded_file)
@@ -47,31 +56,22 @@ if uploaded_file:
     # ================= DATA UNDERSTANDING =================
     st.subheader("🔍 Data Understanding")
 
-    # Jumlah Baris & Kolom
     st.write(f"Jumlah Baris: {df.shape[0]}")
     st.write(f"Jumlah Kolom: {df.shape[1]}")
 
-    # Data Head
     st.write("Data Head (5 Data Teratas)")
     st.dataframe(df.head())
 
-    # Data Tail
     st.write("Data Tail (5 Data Terakhir)")
     st.dataframe(df.tail())
 
-    # Info Data (Tipe Data)
     st.write("Informasi Struktur Data")
-
     buffer = io.StringIO()
     df.info(buf=buffer)
-    info_str = buffer.getvalue()
+    st.code(buffer.getvalue())
 
-    st.code(info_str)
-
-    # Statistik Deskriptif
     st.write("Statistik Deskriptif")
     st.dataframe(df.describe())
-
 
     # ================= PREPROCESSING =================
     st.subheader("🧹 Data Preprocessing")
@@ -80,7 +80,6 @@ if uploaded_file:
     df_clean, info_missing = handle_missing_value(df)
 
     st.markdown("📌 Penanganan Missing Value")
-
     st.markdown("🔹 Jumlah Missing Value Sebelum")
     st.dataframe(info_missing["missing_before"])
 
@@ -127,75 +126,68 @@ if uploaded_file:
         numeric_cols
     )
 
-# ================= MODELING =================
-if st.button("🚀 Jalankan Regresi Linear"):
+    # ================= MODELING =================
+    if st.button("🚀 Jalankan Regresi Linear"):
 
-    progress = st.progress(0)
-    status_text = st.empty()
+        progress = st.progress(0)
+        status_text = st.empty()
 
-    # Simulasi loading step-by-step
-    status_text.text("📊 Menyiapkan data...")
-    progress.progress(20)
+        status_text.text("📊 Menyiapkan data...")
+        progress.progress(20)
+        time.sleep(0.5)
 
-    import time
-    time.sleep(0.5)
+        status_text.text("🧮 Melatih model regresi linear...")
+        progress.progress(60)
+        hasil = run_regression(df_ready, target=target_col)
+        time.sleep(0.5)
 
-    status_text.text("🧮 Melatih model regresi linear...")
-    progress.progress(60)
+        status_text.text("📈 Menghitung evaluasi model...")
+        progress.progress(90)
+        time.sleep(0.5)
 
-    hasil = run_regression(df_ready, target=target_col)
+        progress.progress(100)
+        progress.empty()
+        status_text.empty()
 
-    time.sleep(0.5)
+        st.success("✅ Model berhasil dijalankan!")
 
-    status_text.text("📈 Menghitung evaluasi model...")
-    progress.progress(90)
+        # ================= EVALUASI =================
+        st.subheader("📊 Evaluasi Model")
+        st.write(f"**R² Score:** {hasil['r2']:.4f}")
+        st.write(f"**MSE:** {hasil['mse']:.4f}")
+        st.write(f"**RMSE:** {hasil['rmse']:.4f}")
+        st.write(f"**MAE:** {hasil['mae']:.4f}")
 
-    time.sleep(0.5)
+        # ================= PREDIKSI =================
+        st.subheader("📈 Hasil Prediksi")
+        df_pred = pd.DataFrame({
+            "Aktual": hasil["y_test"].values,
+            "Prediksi": hasil["y_pred"]
+        })
+        st.dataframe(df_pred)
 
-    progress.progress(100)
-    status_text.empty()
-    progress.empty()
+        # ================= VISUAL =================
+        st.subheader("📉 Visualisasi Aktual vs Prediksi")
+        fig2, ax = plt.subplots()
 
-    st.success("✅ Model berhasil dijalankan!")
+        sns.scatterplot(
+            x=df_pred["Aktual"],
+            y=df_pred["Prediksi"],
+            hue=df_pred["Prediksi"] >= df_pred["Aktual"],
+            palette={True: "blue", False: "orange"},
+            legend=False,
+            ax=ax
+        )
 
-    # ================= EVALUASI =================
-    st.subheader("📊 Evaluasi Model")
+        ax.set_xlabel("Nilai Aktual")
+        ax.set_ylabel("Nilai Prediksi")
+        ax.set_title("Scatter Plot Aktual vs Prediksi", fontweight="bold")
 
-    st.write(f"**R² Score:** {hasil['r2']:.4f}")
-    st.write(f"**MSE:** {hasil['mse']:.4f}")
-    st.write(f"**RMSE:** {hasil['rmse']:.4f}")
-    st.write(f"**MAE:** {hasil['mae']:.4f}")
+        st.pyplot(fig2)
 
-    # ================= PREDIKSI =================
-    st.subheader("📈 Hasil Prediksi")
+        # ================= KOEFISIEN =================
+        st.subheader("📌 Koefisien Regresi")
+        st.dataframe(hasil["coef"])
 
-    df_pred = pd.DataFrame({
-        "Aktual": hasil["y_test"].values,
-        "Prediksi": hasil["y_pred"]
-    })
-
-    st.dataframe(df_pred)
-
-    # ================= VISUAL =================
-    st.subheader("📉 Visualisasi Aktual vs Prediksi")
-
-    fig2, ax = plt.subplots()
-
-    sns.scatterplot(
-        x=df_pred["Aktual"],
-        y=df_pred["Prediksi"],
-        hue=df_pred["Prediksi"] >= df_pred["Aktual"],
-        palette={True: "blue", False: "orange"},
-        legend=False,
-        ax=ax
-    )
-
-    ax.set_xlabel("Nilai Aktual")
-    ax.set_ylabel("Nilai Prediksi")
-    ax.set_title("Scatter Plot Aktual vs Prediksi", fontweight="bold")
-
-    st.pyplot(fig2)
-
-    # ================= KOEFISIEN =================
-    st.subheader("📌 Koefisien Regresi")
-    st.dataframe(hasil["coef"])
+else:
+    st.info("⬆️ Silakan upload dataset terlebih dahulu untuk memulai.")

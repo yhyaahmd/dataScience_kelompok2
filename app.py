@@ -30,7 +30,7 @@ if uploaded_file:
     else:
         df = pd.read_excel(uploaded_file)
 
-    st.subheader("📄 Data Awal")
+    st.subheader("📄 Preview Data")
     st.dataframe(df)
 
     # ================= DATA UNDERSTANDING =================

@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import io
+import time
 
 from preprocessing import (
     handle_missing_value,
@@ -116,54 +117,75 @@ if uploaded_file:
         numeric_cols
     )
 
-    # ================= MODELING =================
-    if st.button("🚀 Jalankan Regresi Linear"):
-        with st.spinner("Sedang melatih model regresi..."):
-            hasil = run_regression(df_ready, target=target_col)
+# ================= MODELING =================
+if st.button("🚀 Jalankan Regresi Linear"):
 
-        st.success("Model berhasil dijalankan!")
+    progress = st.progress(0)
+    status_text = st.empty()
 
-        # ================= EVALUASI =================
-        st.subheader("📊 Evaluasi Model")
+    # Simulasi loading step-by-step
+    status_text.text("📊 Menyiapkan data...")
+    progress.progress(20)
 
-        mae = mean_absolute_error(hasil["y_test"], hasil["y_pred"])
+    import time
+    time.sleep(0.5)
 
-        st.write(f"**R² Score:** {hasil['r2']:.4f}")
-        st.write(f"**MSE:** {hasil['mse']:.4f}")
-        st.write(f"**RMSE:** {hasil['rmse']:.4f}")
-        st.write(f"**MAE:** {hasil['mae']:.4f}")
+    status_text.text("🧮 Melatih model regresi linear...")
+    progress.progress(60)
 
-        # ================= PREDIKSI =================
-        st.subheader("📈 Hasil Prediksi")
-        df_pred = pd.DataFrame({
-            "Aktual": hasil["y_test"].values,
-            "Prediksi": hasil["y_pred"]
-        })
-        st.dataframe(df_pred)
+    hasil = run_regression(df_ready, target=target_col)
 
-        # ================= VISUAL =================
-        fig2, ax = plt.subplots()
+    time.sleep(0.5)
 
-        sns.scatterplot(
-            x=df_pred["Aktual"],
-            y=df_pred["Prediksi"],
-            hue=df_pred["Prediksi"] >= df_pred["Aktual"],
-            palette={True: "blue", False: "orange"},
-            ax=ax,
-            legend=False
-        )
+    status_text.text("📈 Menghitung evaluasi model...")
+    progress.progress(90)
 
-        fig2.suptitle(
-            "Scatter Plot Perbandingan Nilai Aktual dan Prediksi",
-            fontsize=14,
-            fontweight="bold"
-        )
+    time.sleep(0.5)
 
-        ax.set_xlabel("Nilai Aktual")
-        ax.set_ylabel("Nilai Prediksi")
+    progress.progress(100)
+    status_text.empty()
+    progress.empty()
 
-        st.pyplot(fig2)
+    st.success("✅ Model berhasil dijalankan!")
 
-        # ================= KOEFISIEN ================= 
-        st.subheader("📌 Koefisien Regresi") 
-        st.dataframe(hasil["coef"])
+    # ================= EVALUASI =================
+    st.subheader("📊 Evaluasi Model")
+
+    st.write(f"**R² Score:** {hasil['r2']:.4f}")
+    st.write(f"**MSE:** {hasil['mse']:.4f}")
+    st.write(f"**RMSE:** {hasil['rmse']:.4f}")
+    st.write(f"**MAE:** {hasil['mae']:.4f}")
+
+    # ================= PREDIKSI =================
+    st.subheader("📈 Hasil Prediksi")
+
+    df_pred = pd.DataFrame({
+        "Aktual": hasil["y_test"].values,
+        "Prediksi": hasil["y_pred"]
+    })
+
+    st.dataframe(df_pred)
+
+    # ================= VISUAL =================
+    st.subheader("📉 Visualisasi Aktual vs Prediksi")
+
+    fig2, ax = plt.subplots()
+
+    sns.scatterplot(
+        x=df_pred["Aktual"],
+        y=df_pred["Prediksi"],
+        hue=df_pred["Prediksi"] >= df_pred["Aktual"],
+        palette={True: "blue", False: "orange"},
+        legend=False,
+        ax=ax
+    )
+
+    ax.set_xlabel("Nilai Aktual")
+    ax.set_ylabel("Nilai Prediksi")
+    ax.set_title("Scatter Plot Aktual vs Prediksi", fontweight="bold")
+
+    st.pyplot(fig2)
+
+    # ================= KOEFISIEN =================
+    st.subheader("📌 Koefisien Regresi")
+    st.dataframe(hasil["coef"])

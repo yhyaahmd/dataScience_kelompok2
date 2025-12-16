@@ -33,12 +33,15 @@ from modeling import run_regression
 from sklearn.metrics import mean_absolute_error
 
 # =============== Buat Banner =====================
-from streamlit_image_carousel import image_carousel
-
-image_carousel([
-    {"img": "assets/banner1.png"},
-    {"img": "assets/banner2.png"}
-])
+try:
+    from streamlit_image_carousel import image_carousel
+    image_carousel([
+        {"img": "assets/banner1.png"},
+        {"img": "assets/banner2.png"}
+    ])
+except Exception:
+    st.image("assets/banner1.png", use_container_width=True)
+    st.image("assets/banner2.png", use_container_width=True)
 
 # ================= TITLE =================
 st.title("📈 Prediksi Data Menggunakan Regresi Linear")

@@ -5,6 +5,19 @@ import seaborn as sns
 import io
 import time
 
+st.markdown("""
+<style>
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+</style>
+""", unsafe_allow_html=True)
+
 from preprocessing import (
     handle_missing_value,
     replace_outlier_with_median,

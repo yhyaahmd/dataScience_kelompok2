@@ -5,6 +5,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"]  {
+    font-family: 'Poppins', sans-serif;
+}
+</style>
+""", unsafe_allow_html=True)
 
 def run_regression(df, target):
     X = df.drop(columns=[target])

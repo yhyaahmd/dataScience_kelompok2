@@ -35,10 +35,13 @@ from sklearn.metrics import mean_absolute_error
 # =============== Buat Banner =====================
 try:
     from streamlit_image_carousel import image_carousel
-    image_carousel([
-        {"img": "assets/banner1.png"},
-        {"img": "assets/banner2.png"}
-    ])
+    image_carousel(
+        [
+            {"img": "assets/banner1.png"},
+            {"img": "assets/banner2.png"}
+        ],
+        height=300
+    )
 except Exception:
     st.image("assets/banner1.png", use_container_width=True)
     st.image("assets/banner2.png", use_container_width=True)

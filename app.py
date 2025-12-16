@@ -33,6 +33,31 @@ from modeling import run_regression
 from sklearn.metrics import mean_absolute_error
 
 # ============== Buat Banner ==============
+carousel_items = [
+    {
+        "title": "Analisis Pertanian Cerdas",
+        "text": "Menggunakan Data Science untuk hasil panen maksimal",
+        "interval": None,
+        "img": "https://images.unsplash.com/photo-1625246333195-09d9b630dc93?q=80&w=1920&auto=format&fit=crop"
+    },
+    {
+        "title": "Prediksi Akurat",
+        "text": "Algoritma Regresi Linear untuk estimasi produksi",
+        "interval": None,
+        "img": "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1920&auto=format&fit=crop"
+    },
+    {
+        "title": "Teknologi & Alam",
+        "text": "Integrasi teknologi modern dalam agrikultur",
+        "interval": None,
+        "img": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?q=80&w=1920&auto=format&fit=crop"
+    }
+]
+
+# Menampilkan Carousel
+# Container digunakan agar carousel tidak terlalu lebar jika di layar ultra-wide
+with st.container():
+    carousel(items=carousel_items)
 
 # ================= TITLE =================
 st.title("📈 Prediksi Data Menggunakan Regresi Linear")

@@ -1,3 +1,4 @@
+pip install streamlit-image-carousel
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -33,16 +34,12 @@ from modeling import run_regression
 from sklearn.metrics import mean_absolute_error
 
 # =============== Buat Banner =====================
-banner = st.empty()
+from streamlit_image_carousel import image_carousel
 
-images = [
-    "assets/banner1.png",
-    "assets/banner2.png"
-]
-
-for img in images:
-    banner.image(img, use_container_width=True)
-    time.sleep(2)
+image_carousel([
+    {"img": "assets/banner1.jpg"},
+    {"img": "assets/banner2.jpg"}
+])
 
 # ================= TITLE =================
 st.title("📈 Prediksi Data Menggunakan Regresi Linear")
